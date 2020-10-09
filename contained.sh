@@ -276,7 +276,7 @@ main() {
   log 'About to start program \"%s\" using command arguments \"%s\" as user \"%s\" and group \"%s\", and with additional capabilities \"%s\"' \
     "$(command -v "${prog_with_args[0]}")" "${prog_with_args[*]:1}" "$run_as_user" "$run_as_group" "${capabilities[*]}"
   /usr/bin/cgexec -g pids,cpu,cpuacct,memory:/"$tmp_cgroup_name" \
-    /usr/bin/unshare -m --uts --pid --fork --mount-proc -R "$tmp_chroot_dir" \
+    /usr/bin/unshare -m --uts --pid --fork --kill-child --mount-proc -R "$tmp_chroot_dir" \
     /usr/bin/setpriv --reset-env --no-new-privs --inh-caps "$setpriv_caps" --ambient-caps "$setpriv_caps" --clear-groups --reuid "$run_as_user" --regid "$run_as_group" \
     "${prog_with_args[@]}"
 }
