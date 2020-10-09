@@ -115,7 +115,7 @@ teardown_cgroup() {
 print_usage() {
   local -i exit_status="$1"
   cat <<EOF
-contained.sh - Rudimentary sandbox for running a program in its independent PID/hostname/mount namespaces, and with restricted access to file system, limited resource usage, optional privilge capabilities.
+contained.sh - Rudimentary sandbox for running a program in its independent PID/hostname/mount namespaces, and with restricted access to file system, limited resource usage, optional privileged capabilities.
 
 Usage:
 $0 [options] -- program [arguments...]"
@@ -135,18 +135,20 @@ Options:
 
 --cap=<capability-name>               Grant this capability to the program. This option can be used multiple times.
 
-sudo ./contained.sh \
-  (Restrict access to file system)
-  --can-read /bin --can-read /etc --can-read /lib --can-read /lib64 --can-read /sbin --can-read /usr --can-read /var \
-  --can-write /var/log/nginx \
-  (Restrict system resource usage)
-  --proc-max 30 --cpu-pct 10 --mem-limit-mb 32 \
-  (Run as a regular user)
-  --user www-data --group nogroup \
-  (Permit listening on privileged port)
-  --cap net_bind_service \
-  (Start nginx)
-  -- /usr/sbin/nginx -g 'daemon off;'
+Example: run nginx web server as an unprivileged user, while restricting its system resource usage, and only allow write-access to its log directory:
+
+  sudo ./contained.sh \
+    (Restrict access to file system)
+    --can-read /bin --can-read /etc --can-read /lib --can-read /lib64 --can-read /sbin --can-read /usr --can-read /var \
+    --can-write /var/log/nginx \
+    (Restrict system resource usage)
+    --proc-max 30 --cpu-pct 10 --mem-limit-mb 32 \
+    (Run as a regular user)
+    --user www-data --group nogroup \
+    (Permit listening on privileged port)
+    --cap net_bind_service \
+    (Start nginx)
+    -- /usr/sbin/nginx -g 'daemon off;'
 EOF
   exit "$exit_status"
 }
