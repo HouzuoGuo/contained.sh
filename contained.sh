@@ -190,7 +190,7 @@ main() {
           shift
           if [ $# -ge 1 ]; then arg_val="$1"; else print_usage 1; fi
         fi
-        pid_max="$1"
+        pid_max="$arg_val"
         ;;
       --cpu-pct=*) arg_val="${1#*=}" ;&
       -c|--cpu-pct)
@@ -198,7 +198,7 @@ main() {
           shift
           if [ $# -ge 1 ]; then arg_val="$1"; else print_usage 1; fi
         fi
-        cpu_pct="$1"
+        cpu_pct="$arg_val"
         ;;
       --mem-limit-mb=*) arg_val="${1#*=}" ;&
       -m|--mem-limit-mb)
@@ -206,7 +206,7 @@ main() {
           shift
           if [ $# -ge 1 ]; then arg_val="$1"; else print_usage 1; fi
         fi
-        mem_limit_mb="$1"
+        mem_limit_mb="$arg_val"
         ;;
       --user=*) arg_val="${1#*=}" ;&
       -u|--user)
@@ -214,7 +214,7 @@ main() {
           shift
           if [ $# -ge 1 ]; then arg_val="$1"; else print_usage 1; fi
         fi
-        run_as_user="$1"
+        run_as_user="$arg_val"
         ;;
       --group=*) arg_val="${1#*=}" ;&
       -g|--group)
@@ -222,7 +222,7 @@ main() {
           shift
           if [ $# -ge 1 ]; then arg_val="$1"; else print_usage 1; fi
         fi
-        run_as_group="$1"
+        run_as_group="$arg_val"
         ;;
       --cap=*) arg_val="${1#*=}" ;&
       --cap)
