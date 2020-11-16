@@ -96,12 +96,13 @@ setup_cgroup() {
   local -r run_as_user="$4" run_as_group="$5"
   local -r cgroup_name="contained-dot-sh-$(uuidgen)"
   log "Creating a control group %s - limit number of processes: %d; limit CPU usage: %d %%; limit memory usage: %d MB" "$cgroup_name" "$pid_max" "$cpu_pct" "$mem_limit_mb"
-  cgcreate -a "$run_as_user:$run_as_group" -t "$run_as_user:$run_as_group" -g "pids,cpu,cpuacct,memory:/$cgroup_name"
+  cgcreate -g "pids,cpu,cpuacct,memory:/$cgroup_name"
   cgset -r pids.max="$pid_max" "$cgroup_name"
   # In a second of CPU's time, the affected program may use up to Limit% * 1000000 / 100 microsconds.
   cgset -r cpu.cfs_period_us=1000000 "$cgroup_name"
   cgset -r cpu.cfs_quota_us=$((cpu_pct*1000000/100)) "$cgroup_name"
   cgset -r memory.limit_in_bytes=$((mem_limit_mb*1024*1024)) "$cgroup_name"
+  cgset -r memory.swappiness=0 "$cgroup_name"
   printf '%s' "$cgroup_name"
 }
 
